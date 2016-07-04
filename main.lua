@@ -18,8 +18,8 @@ function love.touchreleased( id, x, y, dx, dy, pressure)
 end
 
 function love.mousereleased( x, y, button, istouch )
-    if istouch then return end
-    love.touchreleased(nil, x, y)
+    --if istouch then return end
+    --love.touchreleased(nil, x, y)
 end
 
 function love.keypressed(key, scancode, isrepeat)
