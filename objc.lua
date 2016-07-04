@@ -101,8 +101,9 @@ ffi.C.NSLog(fmt, identifier)
 local str = msg("const char *,id,id", identifier, SEL("UTF8String"))
 ]]
 
+local NSString = C("NSString")
 R.NSString = function(s)
-    local str = msg("id,id,id", C("NSString"), SEL("alloc"))
+    local str = msg("id,id,id", NSString, SEL("alloc"))
     return msg("id,id,id, const char *", str, SEL("initWithUTF8String:"), s)
 end
 

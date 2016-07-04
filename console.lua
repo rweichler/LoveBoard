@@ -17,7 +17,7 @@ function CONSOLE:new()
     self.y = SCREEN_HEIGHT/2
     self.width = SCREEN_WIDTH
     self.height = SCREEN_HEIGHT/2
-    self.on = true
+    self.on = false
     return self
 end
 

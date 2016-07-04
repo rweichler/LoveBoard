@@ -1,0 +1,5 @@
+//launch an app just by knowing its bundle identifier
+id app = [[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier:bundleID];
+   [[%c(SBUIController) sharedInstanceIfExists] activateApplication:app];
+    //use ‘activateApplicationAnimated:’ if iOS < 9.0
+[[UIApplication sharedApplication] launchApplicationWithBundleIdentifier:suspended:]
