@@ -2,7 +2,7 @@ VIEW = require 'view'
 
 local CONSOLE = VIEW()
 
-local bg = {20, 20, 20}
+local bg = {0, 0, 0, 200}
 
 local floor = math.floor
 local function MAX_BUFFER()
@@ -17,6 +17,7 @@ function CONSOLE:new()
     self.y = SCREEN_HEIGHT/2
     self.width = SCREEN_WIDTH
     self.height = SCREEN_HEIGHT/2
+    self.on = true
     return self
 end
 
@@ -27,6 +28,7 @@ function CONSOLE:set_on(on)
     else
         self.background_color = nil
     end
+    love.keyboard.setKeyRepeat(self.on)
 end
 
 function CONSOLE:get_on()
@@ -49,33 +51,25 @@ function CONSOLE:draw()
     DRAW_TEXT(self.current_command, 0, self.y + self.height - TEXT_HEIGHT)
 end
 
-local enter = {}
-enter['\r'] = '\n'
-enter['enter'] = '\n'
-enter['return'] = '\n'
-enter['kpenter'] = '\n'
-enter['kpenter'] = '\n'
-enter['space'] = ' '
-enter['backspace'] = '\b'
+function CONSOLE:keypressed(key)
+    if not self.on then return end
 
-function CONSOLE:keypress(key)
-    key = enter[key] or key
-    if key == '`' then
-        self.on = not self.on
-        return true
-    end
-    if not self.on or #key ~= 1 then return end
-    print(key)
-    if key == '\n' then
+    if key == 'return' then
         self:run_command()
-    elseif key == '\b' or string.byte(key) == 127 then
+    elseif key == 'backspace' then
         self.current_command = string.sub(self.current_command, 1, #self.current_command - 1)
-    else
-        self.current_command = self.current_command..key
+    elseif key == 'escape' then
+        self.on = false
     end
-    return true
 end
 
+function CONSOLE:textinput(text)
+    if text == '`' then
+        self.on = not self.on
+    elseif self.on then
+        self.current_command = self.current_command..text
+    end
+end
 
 function CONSOLE:run_command()
     table.insert(self.old_commands, self.current_command)

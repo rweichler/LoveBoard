@@ -53,7 +53,7 @@ function VIEW:render(x, y)
     y = y + self.y
     local bg = self.background_color
     if bg then 
-        FILL_RECT(floor(x), floor(y), self.width, self.height, bg[1] or 0, bg[2] or 0, bg[3] or 0)
+        FILL_RECT(floor(x), floor(y), self.width, self.height, bg[1] or 0, bg[2] or 0, bg[3] or 0, bg[4])
     end
 
     self:draw(x, y)

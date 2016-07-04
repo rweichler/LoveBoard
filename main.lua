@@ -8,6 +8,7 @@ function love.load()
         "Type `relove` in terminal\nto relaunch this\n\n"..
         "width: "..SCREEN_WIDTH.."\nheight:"..SCREEN_HEIGHT
     console = CONSOLE()
+    love.keyboard.setTextInput(true)
 end
 
 
@@ -22,8 +23,11 @@ function love.mousereleased( x, y, button, istouch )
 end
 
 function love.keypressed(key, scancode, isrepeat)
-    print(key, scancode, isrepeat)
-    console:keypress(key)
+    console:keypressed(key, scancode, isrepeat)
+end
+
+function love.textinput(text)
+    console:textinput(text)
 end
 
 local big = love.graphics.newFont(40)
@@ -43,8 +47,5 @@ function love.draw()
     love.graphics.print(txt, 20, 60)
     console:render()
 end
-
-
-
 
 require 'ios_compat'

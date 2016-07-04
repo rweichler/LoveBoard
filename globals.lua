@@ -1,10 +1,10 @@
 MOBILE = not require('jit').arch == 'x64'
-FILL_RECT = function(x, y, w, h, r, g, b)
-    love.graphics.setColor(r, g, b)
+FILL_RECT = function(x, y, w, h, r, g, b, a)
+    love.graphics.setColor(r, g, b, a)
     love.graphics.rectangle("fill", x, y, w, h)
 end
-SET_COLOR = function(r, g, b)
-    love.graphics.setColor(r*255, g*255, b*255)
+SET_COLOR = function(r, g, b, a)
+    love.graphics.setColor(r*255, g*255, b*255, a and a*255)
 end
 local courier
 DRAW_TEXT = function(text, x, y)
