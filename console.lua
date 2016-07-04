@@ -1,10 +1,13 @@
-VIEW = require 'lua.view'
+VIEW = require 'view'
 
 local CONSOLE = VIEW()
 
 local bg = {20, 20, 20}
 
-local MAX_BUFFER = math.floor(SCREEN_HEIGHT/2/15 - 1)
+local floor = math.floor
+local function MAX_BUFFER()
+    return floor(SCREEN_HEIGHT/2/TEXT_HEIGHT- 1)
+end
 
 function CONSOLE:new()
     local self = VIEW.new(self)
@@ -40,19 +43,30 @@ function CONSOLE:draw()
         else
             SET_COLOR(0.8, 0.8, 0.8)
         end
-        DRAW_TEXT(v, 0, (MAX_BUFFER - #self.old_commands)*15 + self.y + (i - 1)*15)
+        DRAW_TEXT(v, 0, (MAX_BUFFER() - #self.old_commands)*TEXT_HEIGHT + self.y + (i - 1)*TEXT_HEIGHT)
     end
     SET_COLOR(1, 1, 1)
-    DRAW_TEXT(self.current_command, 0, self.y + self.height - 15)
+    DRAW_TEXT(self.current_command, 0, self.y + self.height - TEXT_HEIGHT)
 end
 
+local enter = {}
+enter['\r'] = '\n'
+enter['enter'] = '\n'
+enter['return'] = '\n'
+enter['kpenter'] = '\n'
+enter['kpenter'] = '\n'
+enter['space'] = ' '
+enter['backspace'] = '\b'
+
 function CONSOLE:keypress(key)
+    key = enter[key] or key
     if key == '`' then
         self.on = not self.on
         return true
     end
     if not self.on or #key ~= 1 then return end
-    if key == '\n' or key == '\r' then
+    print(key)
+    if key == '\n' then
         self:run_command()
     elseif key == '\b' or string.byte(key) == 127 then
         self.current_command = string.sub(self.current_command, 1, #self.current_command - 1)
@@ -79,7 +93,7 @@ function CONSOLE:run_command()
         print_error(err)
     end
     self.current_command = ""
-    while #self.old_commands > MAX_BUFFER do
+    while #self.old_commands > MAX_BUFFER() do
         table.remove(self.old_commands, 1)
     end
 end

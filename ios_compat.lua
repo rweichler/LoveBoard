@@ -7,8 +7,14 @@ love.draw = function()
 end
 
 local orig = love.graphics.newFont
-love.graphics.newFont = function(x)
-    return orig(x*2)
+love.graphics.newFont = function(a, b)
+    if not b then
+        local size = a
+        return orig(size*2)
+    else
+        local size = b
+        return orig(a, size*2)
+    end
 end
 
 local orig = love.graphics.print

@@ -1,3 +1,5 @@
+CONSOLE = require 'console'
+
 function love.load()
     LOAD()
     txt = "So yeah this example sucks.\n\n"..
@@ -5,6 +7,7 @@ function love.load()
         "Game is stored in\n/var/mobile/LoveBoard\n\n"..
         "Type `relove` in terminal\nto relaunch this\n\n"..
         "width: "..SCREEN_WIDTH.."\nheight:"..SCREEN_HEIGHT
+    console = CONSOLE()
 end
 
 
@@ -16,6 +19,11 @@ end
 function love.mousereleased( x, y, button, istouch )
     if istouch then return end
     love.touchreleased(nil, x, y)
+end
+
+function love.keypressed(key, scancode, isrepeat)
+    print(key, scancode, isrepeat)
+    console:keypress(key)
 end
 
 local big = love.graphics.newFont(40)
@@ -33,6 +41,7 @@ function love.draw()
     love.graphics.setFont(small)
     love.graphics.setColor(255, 255, 255, 255)
     love.graphics.print(txt, 20, 60)
+    console:render()
 end
 
 
