@@ -9,7 +9,7 @@ local NSNumber = OBJC.class("NSNumber")
 --localize selectors
 local dictWithFile = OBJC.SEL("dictionaryWithContentsOfFile:")
 local valForKey = OBJC.SEL("valueForKey:")
-local objAtIndex = OBJC.SEL("valueForKey:")
+local objAtIndex = OBJC.SEL("objectAtIndex:")
 local isKindOfClass = OBJC.SEL("isKindOfClass:")
 local UTF8String = OBJC.SEL("UTF8String")
 local floatValue = OBJC.SEL("floatValue")
@@ -59,8 +59,12 @@ dict_mt.__index = function(self, key)
 end
 
 arr_mt.__index = function(self, key)
-    local val = OBJC.msg("id,id,id,int", self.__id, objAtIndex, key)
+    local val = OBJC.msg("id,id,id,int", self.__id, objAtIndex, key-1)
     return convert(val)
+end
+
+arr_mt.__len = function(self)
+    return OBJC.msg("int,id,id", self.__id, OBJC.SEL("count"))
 end
 
 return function(path)

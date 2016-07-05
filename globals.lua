@@ -1,4 +1,4 @@
-MOBILE = not require('jit').arch == 'x64'
+MOBILE = not (require('jit').arch == 'x64')
 FILL_RECT = function(x, y, w, h, r, g, b, a)
     love.graphics.setColor(r, g, b, a)
     love.graphics.rectangle("fill", x, y, w, h)
@@ -12,11 +12,12 @@ DRAW_TEXT = function(text, x, y)
     love.graphics.print(text, x, y)
 end
 
-
-
 function LOAD()
     SCREEN_WIDTH = love.graphics.getWidth()
     SCREEN_HEIGHT = love.graphics.getHeight()
+    if MOBILE then
+        SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_HEIGHT/2, SCREEN_WIDTH/2
+    end
     courier = love.graphics.newFont('res/mononoki.ttf', 15)
     TEXT_HEIGHT = 18
 end
@@ -24,7 +25,7 @@ end
 -- Lua implementation of PHP scandir function
 function SCANDIR(directory)
     local i, t, popen = 0, {}, io.popen
-    local pfile = popen('ls -a "'..directory..'"')
+    local pfile = popen('ls "'..directory..'"')
     for filename in pfile:lines() do
         i = i + 1
         t[i] = filename
@@ -34,6 +35,9 @@ function SCANDIR(directory)
 end
 
 function FILE_EXISTS(name)
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return name else return end
+   local f = io.open(name, 'r')
+   if f then
+       io.close(f)
+       return name
+   end
 end

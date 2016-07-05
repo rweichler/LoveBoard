@@ -5,13 +5,18 @@ return function()
     local app_folders = SCANDIR("/Applications")
     local apps = {}
     for i,v in ipairs(app_folders) do
-        local file = FILE_EXISTS("/Applications/"..v.."/Info.plist")
-                  or FILE_EXISTS("/Applications/"..v.."/Contents/Info.plist")
+        local folder = "/Applications/"..v
+        local file = FILE_EXISTS(folder.."/Info.plist")
+                  or FILE_EXISTS(folder.."/Contents/Info.plist")
         if file then
             local dict = nsdict(file)
-            local identifier = dict.CFBundleIdentifier
-            if identifier then
-                table.insert(apps, APP(identifier))
+            if dict.SBAppTags and dict.SBAppTags[1] == 'hidden' then
+                --continue
+            else
+                local identifier = dict.CFBundleIdentifier
+                if identifier then
+                    table.insert(apps, APP(identifier, folder))
+                end
             end
         end
     end

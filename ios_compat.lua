@@ -19,7 +19,7 @@ end
 
 local orig = love.graphics.print
 love.graphics.print = function(x, y, z)
-    return orig(x, y/2, z/2)
+    return orig(x, y, z - SCREEN_HEIGHT)
 end
 
 local function tmp(x)
@@ -31,3 +31,9 @@ end
 
 tmp('Width')
 tmp('Height')
+
+
+local orig = love.touchreleased
+love.touchreleased = function(id, x, y, dx, dy, pressure)
+    orig(id, y, SCREEN_HEIGHT - x, dy, -dx, pressure)
+end

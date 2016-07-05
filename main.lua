@@ -5,6 +5,7 @@ for k,v in pairs(apps) do
     app_id_list = app_id_list..v.identifier..'\n'
 end
 
+local logo, big, small, tiny
 function love.load()
     LOAD()
     txt = "So yeah this example sucks.\n\n"..
@@ -13,15 +14,15 @@ function love.load()
         "Type `relove` in terminal\nto relaunch this\n\n"..
         "width: "..SCREEN_WIDTH.."\nheight:"..SCREEN_HEIGHT
     console = CONSOLE()
-    love.keyboard.setTextInput(true)
+    logo = "LöveBoard ("..SCREEN_WIDTH.."x"..SCREEN_HEIGHT..")"
+    big = love.graphics.newFont(40)
+    small = love.graphics.newFont(20)
+    tiny = love.graphics.newFont(15)
 end
 
-local big = love.graphics.newFont(40)
-local small = love.graphics.newFont(20)
-local tiny = love.graphics.newFont(10)
 
 function love.touchreleased( id, x, y, dx, dy, pressure)
-    local idx = math.ceil((y - 60)/tiny:getHeight())
+    local idx = math.ceil((y - 20 - big:getHeight())/tiny:getHeight())
     if idx < 1 or idx > #apps then
         love.event.quit()
         return
@@ -43,18 +44,19 @@ function love.textinput(text)
     console:textinput(text)
 end
 
-
 function love.draw()
     love.graphics.setFont(big)
     love.graphics.setColor(255, 0, 0, 255)
     for i=1,50 do
-        love.graphics.print("<3", math.random(-100, SCREEN_WIDTH), math.random(-100, SCREEN_HEIGHT))
+        local x = math.random(0, SCREEN_WIDTH)
+        local y = math.random(0, SCREEN_HEIGHT)
+        love.graphics.print('<3', x, y)
     end
     love.graphics.setColor(30, 130, 255, 255)
-    love.graphics.print("LöveBoard", 20, 20)
+    love.graphics.print(logo, 20, 20)
     love.graphics.setFont(tiny)
     love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.print(app_id_list, 20, 60)
+    love.graphics.print(app_id_list, 20, 20 + big:getHeight())
     console:render()
 end
 
