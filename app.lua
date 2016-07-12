@@ -8,11 +8,20 @@ local NSString = OBJC.NSString
 
 local O = OBJECT()
 
-function O:new(identifier, folder)
+function O:new(identifier, folder, icon)
     if not identifier then error("no identifier") end
     local self = OBJECT.new(self)
     self.identifier = identifier
     self.folder = folder
+    --[[
+    --this errors
+    if icon then
+        local file = folder..'/'..icon
+        if FILE_EXISTS(file) then
+            self.icon = love.graphics.newImage(file)
+        end
+    end
+    ]]
     return self
 end
 

@@ -14,8 +14,9 @@ return function()
                 --continue
             else
                 local identifier = dict.CFBundleIdentifier
+                local icon = dict.CFBundleIconFiles and dict.CFBundleIconFiles[1]
                 if identifier then
-                    table.insert(apps, APP(identifier, folder))
+                    table.insert(apps, APP(identifier, folder, icon))
                 end
             end
         end

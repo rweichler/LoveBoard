@@ -1,5 +1,5 @@
 CONSOLE = require 'console'
-local apps = require('app_list')()
+apps = require('app_list')()
 local app_id_list = ''
 for k,v in pairs(apps) do
     app_id_list = app_id_list..v.identifier..'\n'

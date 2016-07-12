@@ -24,13 +24,12 @@ end
 
 -- Lua implementation of PHP scandir function
 function SCANDIR(directory)
-    local i, t, popen = 0, {}, io.popen
-    local pfile = popen('ls "'..directory..'"')
-    for filename in pfile:lines() do
-        i = i + 1
-        t[i] = filename
+    local t = {}
+    local f = io.popen('ls "'..directory..'"')
+    for line in f:lines() do
+        table.insert(t, line)
     end
-    pfile:close()
+    f:close()
     return t
 end
 
