@@ -1,4 +1,4 @@
-MOBILE = not (require('jit').arch == 'x64')
+MOBILE = require 'jit' and not (require('jit').arch == 'x64')
 FILL_RECT = function(x, y, w, h, r, g, b, a)
     love.graphics.setColor(r, g, b, a)
     love.graphics.rectangle("fill", x, y, w, h)
@@ -39,4 +39,11 @@ function FILE_EXISTS(name)
        io.close(f)
        return name
    end
+end
+
+function os.capture(cmd)
+  local f = assert(io.popen(cmd, 'r'))
+  local s = assert(f:read('*a'))
+  f:close()
+  return s
 end

@@ -1,3 +1,13 @@
+#!/usr/bin/env luajit
+require 'globals'
+if not love then
+    local cmd = arg[0]
+    local count = #"main.lua"
+    GAME_DIRECTORY = string.sub(cmd, 1, #cmd - count)
+    require 'bootstrap'
+    return
+end
+
 CONSOLE = require 'console'
 apps = require('app_list')()
 local app_id_list = ''
