@@ -1,12 +1,17 @@
 #!/usr/bin/env luajit
-require 'globals'
 if not love then
     local cmd = arg[0]
+    if cmd == 'luajit' then
+        cmd = arg[1]
+    end
     local count = #"main.lua"
     GAME_DIRECTORY = string.sub(cmd, 1, #cmd - count)
+    package.path = package.path..";"..GAME_DIRECTORY.."?.lua"
+    require 'globals'
     require 'bootstrap'
     return
 end
+require 'globals'
 
 CONSOLE = require 'console'
 apps = require('app_list')()
