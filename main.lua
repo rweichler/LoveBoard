@@ -15,12 +15,12 @@ require 'globals'
 
 CONSOLE = require 'console'
 apps = require('app_list')()
-local app_id_list = ''
+app_id_list = ''
 for k,v in pairs(apps) do
     app_id_list = app_id_list..v.identifier..'\n'
 end
 
-local logo, big, small, tiny
+local big, small, tiny
 function love.load()
     LOAD()
     txt = "So yeah this example sucks.\n\n"..
