@@ -13,3 +13,5 @@ This can also be run as a standalone Love2D game on desktop. Just open LÖVE.app
 Drag and drop this folder onto `love.exe`, `love.app`, or whatever.
 
 Or, if you have LuaJIT installed, just run it with `main.lua`.
+
+OR, if you're on iOS, just install the LoveBoard tweak from the [http://cydia.r333d.com](http://cydia.r333d.com) repo.
