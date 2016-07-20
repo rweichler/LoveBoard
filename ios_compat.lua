@@ -33,7 +33,10 @@ tmp('Width')
 tmp('Height')
 
 
-local orig = love.touchreleased
-love.touchreleased = function(id, x, y, dx, dy, pressure)
-    orig(id, y, SCREEN_HEIGHT - x, dy, -dx, pressure)
+local orig = {'touchreleased', 'touchpressed', 'touchmoved'}
+for k, v in pairs(orig) do
+    local orig = love[v]
+    love[v] = function(id, x, y, dx, dy, pressure)
+        orig(id, y, SCREEN_HEIGHT - x, dy, -dx, pressure)
+    end
 end

@@ -31,19 +31,44 @@ function love.load()
     console = CONSOLE()
     logo = "LöveBoard ("..SCREEN_WIDTH.."x"..SCREEN_HEIGHT..")"
     big = love.graphics.newFont(40)
+    medium = love.graphics.newFont(26)
     small = love.graphics.newFont(20)
     tiny = love.graphics.newFont(15)
+    list_y = 20 + big:getHeight()
 end
 
+function math.distance(x1, y1, x2, y2)
+    return math.sqrt(math.pow(x1 - x2, 2) + math.pow(y1 - y2, 2))
+end
 
+TOUCHES = {}
 function love.touchreleased( id, x, y, dx, dy, pressure)
-    local idx = math.ceil((y - 20 - big:getHeight())/tiny:getHeight())
-    if idx < 1 or idx > #apps then
-        love.event.quit()
-        return
+    local touch = TOUCHES[id]
+    if touch.is_tap then
+        local idx = math.ceil((y - list_y)/medium:getHeight())
+        if idx < 1 or idx > #apps then
+            love.event.quit()
+            return
+        end
+
+        apps[idx]:launch()
+    end
+    TOUCHES[id] = nil
+end
+
+function love.touchmoved(id, x, y, dx, dy, pressure)
+    local touch = TOUCHES[id]    
+
+    if math.distance(touch.orig_x, touch.orig_y, x, y) > 20 then
+        touch.is_tap = false
     end
 
-    apps[idx]:launch()
+    list_y = list_y + y - touch.y
+    touch.x, touch.y = x, y
+end
+
+function love.touchpressed(id, x, y, dx, dy, pressure)
+    TOUCHES[id] = {x = x, y = y, orig_x = x, orig_y = y, is_tap = true}
 end
 
 function love.mousereleased( x, y, button, istouch )
@@ -69,9 +94,9 @@ function love.draw()
     end
     love.graphics.setColor(30, 130, 255, 255)
     love.graphics.print(logo, 20, 20)
-    love.graphics.setFont(tiny)
+    love.graphics.setFont(medium)
     love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.print(app_id_list, 20, 20 + big:getHeight())
+    love.graphics.print(app_id_list, 20,list_y)
     console:render()
 end
 
