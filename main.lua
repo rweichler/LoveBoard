@@ -52,8 +52,23 @@ function love.touchreleased( id, x, y, dx, dy, pressure)
         end
 
         apps[idx]:launch()
+        flavor_text = "Launching\n"..apps[idx].identifier.."..."
     end
     TOUCHES[id] = nil
+end
+
+function love.update(dt)
+    if flavor_text then
+        if not last_time then
+            last_time = 0
+        else
+            last_time = last_time + dt
+            if last_time > 2 then
+                last_time = nil
+                flavor_text = nil
+            end
+        end
+    end
 end
 
 function love.touchmoved(id, x, y, dx, dy, pressure)
@@ -84,19 +99,26 @@ function love.textinput(text)
     console:textinput(text)
 end
 
+heart_count = 50
+heart = '<3'
+heart_color = {255, 0, 0}
 function love.draw()
     love.graphics.setFont(big)
-    love.graphics.setColor(255, 0, 0, 255)
-    for i=1,50 do
+    love.graphics.setColor(heart_color[1], heart_color[2], heart_color[3], 255)
+    for i=1,heart_count do
         local x = math.random(0, SCREEN_WIDTH)
         local y = math.random(0, SCREEN_HEIGHT)
-        love.graphics.print('<3', x, y)
+        love.graphics.print(heart, x, y)
     end
     love.graphics.setColor(30, 130, 255, 255)
     love.graphics.print(logo, 20, 20)
     love.graphics.setFont(medium)
     love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.print(app_id_list, 20,list_y)
+    if flavor_text then
+        love.graphics.print(flavor_text, 20, 200)
+    else
+        love.graphics.print(app_id_list, 20,list_y)
+    end
     console:render()
 end
 
