@@ -13,15 +13,15 @@ function O:new(identifier, folder, icon)
     local self = OBJECT.new(self)
     self.identifier = identifier
     self.folder = folder
-    --[[
-    --this errors
     if icon then
         local file = folder..'/'..icon
         if FILE_EXISTS(file) then
-            self.icon = love.graphics.newImage(file)
+            self.iconfile = file
+            -- this errors sometimes, because apple has some retarded PNG format.
+            -- need to manually convert to ImageData :/
+            --self.icon = IMAGE(file)
         end
     end
-    ]]
     return self
 end
 

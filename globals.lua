@@ -22,6 +22,15 @@ function LOAD()
     TEXT_HEIGHT = 18
 end
 
+function IMAGE(path)
+    local file = 'tmp_img.'..string.sub(path, #path- 2, #path)
+    local symlink = "/var/mobile/LoveBoard/"..file
+    os.execute('ln -s "'..path..'" "'..symlink..'"')
+    local img = love.graphics.newImage(file)
+    os.execute('rm "'..symlink..'"')
+    return img
+end
+
 -- Lua implementation of PHP scandir function
 function SCANDIR(directory)
     local t = {}
