@@ -17,9 +17,7 @@ function O:new(identifier, folder, icon)
         local file = folder..'/'..icon
         if FILE_EXISTS(file) then
             self.iconfile = file
-            -- this errors sometimes, because apple has some retarded PNG format.
-            -- need to manually convert to ImageData :/
-            --self.icon = IMAGE(file)
+            self.icon = IMAGE(file)
         end
     end
     return self

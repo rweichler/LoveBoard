@@ -1,3 +1,8 @@
+local ffi = require 'ffi'
+ffi.cdef([[
+bool l_fix_png(const char *source, const char *dest);
+]])
+
 MOBILE = require 'jit' and not (require('jit').arch == 'x64')
 FILL_RECT = function(x, y, w, h, r, g, b, a)
     love.graphics.setColor(r, g, b, a)
@@ -23,9 +28,14 @@ function LOAD()
 end
 
 function IMAGE(path)
-    local file = 'tmp_img.'..string.sub(path, #path- 2, #path)
+    local ext = string.sub(path, #path- 2, #path)
+    local file = 'tmp_img.'..ext
     local symlink = "/var/mobile/LoveBoard/"..file
-    os.execute('ln -s "'..path..'" "'..symlink..'"')
+    if ext == 'png' then -- do stupid png shit
+        ffi.C.l_fix_png(path, symlink)
+    else
+        os.execute('ln -s "'..path..'" "'..symlink..'"')
+    end
     local img = love.graphics.newImage(file)
     os.execute('rm "'..symlink..'"')
     return img
